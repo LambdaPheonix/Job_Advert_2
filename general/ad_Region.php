@@ -1,43 +1,58 @@
 <?php
-// starts session to move vars around and check logged status
-session_start(); 
 
-require "Nav_bar_html_inside.php";
+
+require "..\HTML_parts\Nav_bar_html_inside.php";
 require "General_functions.php";
-// define WSDL location
-$wsdl = "https://webapp.placementpartner.com/ws/clients/?wsdl";
-// provided by Parallel Software
-$username = 'parallel';
-$password = 'parallel';
-// create SOAP Client
-$client = new SoapClient($wsdl);
-// Authenticate with username and password
-$session_id = $client->login($username, $password);
-// Retrieve list of regions
-$regions_response = $client->getAdvertRegions($session_id);
-// Create an array representing the key-value pairs
-$regions = array();
-foreach($regions_response as $region)
-{
-$regions[$region->id] = $region->label;
-}
-// Create a regional filter
-$regional_filter = array(
-'Gauteng' => array(
-'field' => 'region',
-'operator' => '=',
-'value' => array_search('Limpopo', $regions)
-)
-);
-// retrieve vacancies
-$vacancies_in = array();
-$vacancies_in['Gauteng'] = $client->getAdverts(
-$session_id,
-array($regional_filter['Gauteng'])
-);
+//require "Session.php";
 
+$regions =  $_SESSION['client']->getAdvertRegions($_SESSION['client_id']);
+var_dump($regions);
+
+// Retrieve list of regions
+// makes a function that can filter regions by $region_f
+function upload_regions_to_db(){
+    $regions_all = array();
+    $region=0;
+
+    // connect to db and save all regions to it
+    $conn = mysqli_connect($GLOBALS['server'],$GLOBALS['username'],$GLOBALS['PW'],$GLOBALS['db']);
+    $sql = "INSERT INTO tbl_regions (`Region_id`,`Region_name`) VALUES (Null,'$region')";
+    $query = mysqli_query($conn,$sql);
+
+}
+
+
+function getAdvertByRegion($region_f){
+    // Retrieve list of regions
+    $regions_response = $_SESSION['client']->getAdvertRegions($_SESSION['client_id']);
+    // Create an array representing the key-value pairs
+    $regions = array();
+    foreach($regions_response as $region)
+    {
+    $regions[$region->id] = $region->label;
+    }
+    // Create a regional filter
+    $regional_filter = array(
+        $region_f => array(
+    'field' => 'region',
+    'operator' => '=',
+    'value' => array_search($region_f, $regions)
+    )
+    );
+    // retrieve vacancies
+    $vacancies_in = array();
+    $vacancies_in[$region_f] = $_SESSION['client']->getAdverts(
+        $_SESSION['client_id'],
+        array($regional_filter[$region_f])
+    );
+    return $vacancies_in;
+}
+
+$vacancies_in = getAdvertByRegion("Gauteng");
 // dump the results
-var_dump($vacancies_in);
+// var_dump($vacancies_in);
+
+
 
 foreach($vacancies_in as $elem){
     $dump = json_encode($elem);

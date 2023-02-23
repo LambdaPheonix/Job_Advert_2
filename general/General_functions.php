@@ -1,7 +1,7 @@
 <?php
     // includes server details for mySQL functions
     require "..\Server_details.php";
-    require "ad_filter.php";
+    //require "ad_filter.php";
     require "Session.php";
     // global vars to use in general functions
 
@@ -54,5 +54,26 @@
             
        
     }
+
+    function display_array($arr){
+        foreach($arr as $elem){
+            echo "<br>".$elem;
+        }
+    }
+
+    function createSoapClient_1(){
+        // define WSDL location
+        $wsdl = "https://webapp.placementpartner.com/ws/clients/?wsdl";
+        // provided by Parallel Software
+        $username = 'parallel';
+        $password = 'parallel';
+        // create SOAP Client
+        $client = new SoapClient($wsdl);
+        // Authenticate with username and password
+        $session_id = $client->login($username, $password);
+        $returnArr = array($client,$session_id);
+        return $returnArr;
+    }
+
 
 ?>

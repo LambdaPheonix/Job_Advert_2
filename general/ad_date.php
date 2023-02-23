@@ -1,6 +1,6 @@
 <?php
 // imported files
-require "Nav_bar_html_inside.php";
+require "..\HTML_parts\Nav_bar_html_inside.php";
 require "General_functions.php";
 require "Session.php";
 // define WSDL location
