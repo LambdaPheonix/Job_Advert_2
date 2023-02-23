@@ -1,0 +1,23 @@
+.logged_in {
+    display: none;
+}
+
+.logged_in_done{
+    display: block;
+}
+
+.bg{
+    background-color: aqua;
+    width: 50%;
+    text-align: center;
+    position: relative;
+
+}
+
+.ivis{
+    display: none;
+}
+
+.vis{
+    display: block;
+}

@@ -5,8 +5,8 @@ require "..\HTML_parts\Nav_bar_html_inside.php";
 require "General_functions.php";
 //require "Session.php";
 
-$regions =  $_SESSION['client']->getAdvertRegions($_SESSION['client_id']);
-var_dump($regions);
+//$regions =  $_SESSION['client']->getAdvertRegions($_SESSION['client_id']);
+//var_dump($regions);
 
 // Retrieve list of regions
 // makes a function that can filter regions by $region_f

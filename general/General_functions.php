@@ -1,18 +1,20 @@
 <?php
     // includes server details for mySQL functions
-    require "..\Server_details.php";
-    //require "ad_filter.php";
+    require "../Server_details.php";
     require "Session.php";
     // global vars to use in general functions
 
     // checks the username and password returns boolean
     function check_username_password($uname,$psw,$tbl,&$msg){
+        // connects to db
         $conn =  mysqli_connect($GLOBALS['server'],$GLOBALS['user'],$GLOBALS['PW'],$GLOBALS['db']) or die("could not connect to db". mysqli_connect_error());
-        $sql = "SELECT name, password FROM $tbl WHERE name = '$uname' ";
+        // sql to get password from username
+        $sql = "SELECT username, password FROM $tbl WHERE username = '$uname' ";
+        // check if password matches
         if ($query =  mysqli_query($conn,$sql)) {
             if (mysqli_num_rows($query)>0){    
                 $row = mysqli_fetch_assoc($query);
-                if ($uname == $row['name']  && $psw == $row['password']){
+                if ($uname == $row['username']  && $psw == $row['password']){
                     $msg = "login Success";
                     return true;     
                 } else {
@@ -33,7 +35,7 @@
 
     function get_user_id($uname,$tbl){
         $conn = mysqli_connect($GLOBALS['server'],$GLOBALS['user'],$GLOBALS['PW'],$GLOBALS['db']) or die("could not connect to db". mysqli_connect_error());
-        $sql = "SELECT `name`,`user_id` FROM $tbl WHERE `name` = '$uname' ";
+        $sql = "SELECT `username`,`user_id` FROM $tbl WHERE `username` = '$uname' ";
         $query = mysqli_query($conn,$sql);
         $row = mysqli_fetch_row($query);
         $user_id = $row['user_id'];
@@ -71,9 +73,25 @@
         $client = new SoapClient($wsdl);
         // Authenticate with username and password
         $session_id = $client->login($username, $password);
-        $returnArr = array($client,$session_id);
-        return $returnArr;
+        $_SESSION['client'] = $client;
+        $_SESSION['client_id'] = $session_id;
+        //return $returnArr;
     }
 
-
+    // wraps text in a tag
+    function WrapTag($combineStr,$tag){
+        echo "<$tag>$combineStr</$tag>";
+    }
+    
+    // string combiner
+    function add_str($newStr,&$combineStr){
+        $combineStr = $combineStr.$newStr;
+    }
+    
+    // gives a href to an 'a' tag and wraps in in any tag you wish
+    function aTag_href($path,$label,$tag){
+        $href = "href='$path'";
+        $beforeWrap = "<a $href >$label</a>";
+        return WrapTag($beforeWrap,$tag);
+    }
 ?>
