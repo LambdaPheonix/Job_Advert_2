@@ -1,6 +1,6 @@
 <?php
 // imported files
-require "..\HTML_parts\Nav_bar_html_inside.php";
+//require "..\HTML_parts\Nav_bar_html_inside.php";
 require "General_functions.php";
 require "Session.php";
 // define WSDL location
@@ -25,12 +25,14 @@ $adverts = $client->getUnpublishedAdverts($session_id, "2020-01-01 00:00:00");
 // php inactive_adverts.php
 
 
-echo $ads_date;
-
-
-
-
 foreach($adverts as $elem){
-    $dump = json_encode($elem);
-    echo "<br>"."<br>".$dump;
+    $job_title = sanitizeInput($elem->job_title);
+    $brief_description = sanitizeInput($elem->brief_description);
+    $detail_description = sanitizeInput($elem->detail_description);
+    $region = sanitizeInput($elem->region);
+    echo "<br>".$job_title;
+    echo "<br>".$brief_description;
+    echo "<br>".$detail_description;
+    echo "<br>".$region."<br>"."<br>";
+
 }

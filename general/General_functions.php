@@ -33,17 +33,7 @@
         mysqli_close($conn);
     }
 
-    function get_user_id($uname,$tbl){
-        $conn = mysqli_connect($GLOBALS['server'],$GLOBALS['user'],$GLOBALS['PW'],$GLOBALS['db']) or die("could not connect to db". mysqli_connect_error());
-        $sql = "SELECT `username`,`user_id` FROM $tbl WHERE `username` = '$uname' ";
-        $query = mysqli_query($conn,$sql);
-        $row = mysqli_fetch_row($query);
-        $user_id = $row['user_id'];
-        mysqli_close($conn);
-        return $user_id;
-    }
-
-    function echo_msg($msg){
+    function echo_msg($msg){ // creates and alert out of a message
         echo "<script>alert('$msg');
         </script>";
     }
@@ -52,9 +42,7 @@
         $beforeSanitize = trim($beforeSanitize);
         $beforeSanitize = stripslashes($beforeSanitize);
         $beforeSanitize = htmlspecialchars($beforeSanitize);
-        return $beforeSanitize;  
-            
-       
+        return $beforeSanitize;      
     }
 
     function display_array($arr){
@@ -63,7 +51,7 @@
         }
     }
 
-    function createSoapClient_1(){
+    function createSoapClient_1(){ // connects to SOAP API and returns a client.
         // define WSDL location
         $wsdl = "https://webapp.placementpartner.com/ws/clients/?wsdl";
         // provided by Parallel Software
@@ -80,7 +68,11 @@
 
     // wraps text in a tag
     function WrapTag($combineStr,$tag){
-        echo "<$tag>$combineStr</$tag>";
+        return "<$tag>$combineStr</$tag>";
+    }
+
+    function named_tag($name,$tag){
+
     }
     
     // string combiner
@@ -93,5 +85,19 @@
         $href = "href='$path'";
         $beforeWrap = "<a $href >$label</a>";
         return WrapTag($beforeWrap,$tag);
+    }
+
+    function ad_div_creation($std_obj_ad){
+        $job_title = sanitizeInput($std_obj_ad->job_title);
+        $brief_description = sanitizeInput($std_obj_ad->brief_description);
+        $detail_description = sanitizeInput($std_obj_ad->detail_description);
+        $region = sanitizeInput($std_obj_ad->region);
+        $combineStr = "";
+        add_str(WrapTag(WrapTag($job_title,'p'),'div'),$combineStr);       
+        add_str(WrapTag(WrapTag($brief_description,'p'),'div'),$combineStr);
+        add_str(WrapTag(WrapTag($detail_description,'p'),'div'),$combineStr);
+        add_str(WrapTag(WrapTag($region,'p'),'div'),$combineStr);
+        add_str("<br>",$combineStr);
+        echo WrapTag($combineStr,'div')."<br>";
     }
 ?>

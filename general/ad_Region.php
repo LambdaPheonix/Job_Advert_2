@@ -12,6 +12,9 @@ require "General_functions.php";
 // makes a function that can filter regions by $region_f
 function upload_regions_to_db(){
     $regions_all = array();
+    foreach($_SESSION['client'] as $obj){
+        
+    }
     $region=0;
 
     // connect to db and save all regions to it

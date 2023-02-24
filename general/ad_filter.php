@@ -1,7 +1,7 @@
 <?php
 
 // files to import
-require "..\HTML_parts\Nav_bar_html_inside.php";
+//require "..\HTML_parts\Nav_bar_html_inside.php";
 require "General_functions.php";
 require "Session.php";
 // define WSDL location
@@ -26,17 +26,19 @@ array('field' => 'job_description', 'value' => ' ', 'operator' => 'exact')
 // Retrieve adverts with filter
 $vacancies = $client->getAdverts($session_id, $php_filter);
 // dump the results
-var_dump($vacancies);
+//var_dump($vacancies);
+
 echo "<br>";
+echo "<style>
+        div { border: 5px solid black;
+              padding: 20px;
+              text-align: center;}
+    </style>";
+
 foreach($vacancies as $elem){
-    $job_title = sanitizeInput($elem->job_title);
-    $brief_description = sanitizeInput($elem->brief_description);
-    $detail_description = sanitizeInput($elem->detail_description);
-    echo "<br>".$job_title;
-    echo "<br>".$brief_description;
-    echo "<br>".$detail_description."<br>"."<br>";
+    ad_div_creation($elem);
 
 }
 
-echo $vacancies;
+
 
