@@ -42,7 +42,7 @@ $arrPaths_not_logged = array("Job_ads" => $job_ad, "Login" => $login);
         echo $div;
         }
 
-    echo '<br>' . WrapTag($_SESSION['Logged'],'h1');
+    //echo '<br>' . WrapTag($_SESSION['Logged'],'h1');
 
 ?>
 

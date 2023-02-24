@@ -7,11 +7,50 @@
 }
 
 .bg{
-    background-color: aqua;
-    width: 50%;
+    margin: 10px;
+    background-color: rgb(226, 191, 116);
+    width: 35%;
+    padding: 20px;
     text-align: center;
-    position: relative;
+}
 
+.back_box{
+    flex-direction: column;
+    background-color: #864816;
+    flex : 4;
+}
+
+div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+body {
+    flex-direction: column;
+    display: flex;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    background-color: #864816;
+}
+
+nav {
+    font-size: 20px;
+    width: 100%;
+    background-color: rgb(226, 191, 116);
+    border-bottom:  5px solid rgb(54, 39, 6);
+    border-left: 5px solid rgb(54, 39, 6);
+}
+
+ul {
+    color: beige;
+    background-color: rgb(226, 191, 116);
+    list-style-type: none;
+    padding: 10px 20px;    
+}
+
+a {
+    color: rgb(37, 34, 1); 
 }
 
 .ivis{
