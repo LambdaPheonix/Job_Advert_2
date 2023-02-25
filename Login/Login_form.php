@@ -1,7 +1,5 @@
 <?php
-require "../general/Session.php";
-
-require "../Styles/Login_swap.php";
+require "../Session.php";
 
 ?>
 <!DOCTYPE html>

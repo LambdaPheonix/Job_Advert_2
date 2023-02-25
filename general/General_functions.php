@@ -1,7 +1,8 @@
 <?php
     // includes server details for mySQL functions
     require "../Server_details.php";
-    require "Session.php";
+    //require "Session.php";
+    require "API_functions.php";
     // global vars to use in general functions
 
     // checks the username and password returns boolean
@@ -51,21 +52,6 @@
         }
     }
 
-    function createSoapClient_1(){ // connects to SOAP API and returns a client.
-        // define WSDL location
-        $wsdl = "https://webapp.placementpartner.com/ws/clients/?wsdl";
-        // provided by Parallel Software
-        $username = 'parallel';
-        $password = 'parallel';
-        // create SOAP Client
-        $client = new SoapClient($wsdl);
-        // Authenticate with username and password
-        $session_id = $client->login($username, $password);
-        $_SESSION['client'] = $client;
-        $_SESSION['client_id'] = $session_id;
-        //return $returnArr;
-    }
-
     // wraps text in a tag
     function WrapTag($combineStr,$tag){
         return "<$tag>$combineStr</$tag>";
@@ -100,4 +86,56 @@
         add_str("<br>",$combineStr);
         echo WrapTag($combineStr,'div')."<br>";
     }
+
+    function SwapLogin($num){
+
+        $login = "\Job_advert_2\Login\Login_form.php";
+        $job_ad = "\Job_advert_2\Job_ad_manipulation\Jobs_display_view.php";
+        $data_ad = "\Job_advert_2\Job_ad_manipulation\Jobs_data.php";
+        $logout = "\Job_advert_2\Login\LogOut.php";
+        $arrPaths_logged = array("Job_Adverts" => $job_ad, "Advert_Data" => $data_ad, "Logout" => $logout);
+        $arrPaths_not_logged = array("Job_adverts" => $job_ad, "Login" => $login); 
+         
+        
+            if ($num == 1) {
+                $arrkeys = array_keys($arrPaths_logged);
+                $combineStr = '';
+                for ($i=0; $i < count($arrkeys); $i++) { 
+                    $key = $arrkeys[$i];
+                    $elem = $arrPaths_logged[$key];
+                    //echo WrapTag($key.':'.$elem,'h1');
+                    $aTag = aTag_href($elem,$key,'li');
+                    add_str($aTag,$combineStr);
+                    
+                }
+                $ul = WrapTag($combineStr,'ul');
+                $nav = WrapTag($ul,'nav');
+                $div = WrapTag($nav,'div');
+                echo $div;
+                }
+        
+            if ($num == 0) {
+                $arrkeys = array_keys($arrPaths_not_logged);
+                $combineStr = '';
+                for ($i=0; $i < count($arrkeys); $i++) { 
+                    $key = $arrkeys[$i];
+                    $elem = $arrPaths_not_logged[$key];
+                    //echo WrapTag($key.':'.$elem,'h1');
+                    $aTag = aTag_href($elem,$key,'li');
+                    add_str($aTag,$combineStr);
+                    
+                }
+                $ul = WrapTag($combineStr,'ul');
+                $nav = WrapTag($ul,'nav');
+                $div = WrapTag($nav,'div');
+                echo $div;
+                }
+        
+            //echo '<br>' . WrapTag($_SESSION['Logged'],'h1');
+            }
+
+function login_catchup(){
+    $_SESSION['Catch_up'] = $_SESSION['Logged']-1;
+}
 ?>
+

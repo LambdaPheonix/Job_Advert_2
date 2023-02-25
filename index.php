@@ -1,16 +1,18 @@
 <?php 
-    require "general/Session.php"; 
-    require "Styles/Login_swap.php";
+    
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    <?php require '/Styles/site.css';?>
+</style>
 </head>
 <body>
     
     <div id="nav_bar">
-        <?php require ("HTML_parts\Nav_bar_html_outside.php")?>
+        <?php require 'Session.php';?>
     </div>
 </body>
 
