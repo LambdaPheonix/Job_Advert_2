@@ -10,7 +10,7 @@ On the advert it show the following:
 
 ## How to Install (to use on local computer)
     - clone git to XAMPP/htdocs
-    - move "Job_board" folder to xampp\mysql\data
+    - move "Job_adverts" folder to xampp\mysql\data
     - if your localhost server details are different please change it in Server_details.php
     - to run the site:
         - open XAMPP/MAPP/WAPP

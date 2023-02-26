@@ -1,7 +1,7 @@
 <?php
 // to store any functions used by the API
 
-function createSoapClient_1($username = 'parallel',$password = 'parallel'){ // connects to SOAP API and returns a client.
+function createSoapClient($username = 'parallel',$password = 'parallel'){ // connects to SOAP API and returns a client.
     // define WSDL location
     $wsdl = "https://webapp.placementpartner.com/ws/clients/?wsdl";
     // provided by Parallel Software

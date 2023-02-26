@@ -57,9 +57,21 @@
         return "<$tag>$combineStr</$tag>";
     }
 
-    function named_tag($name,$tag){
-
+    function named_tag($name){
+        echo " name='$name' ";
     }
+
+    function id_tag($id){
+        echo " id='$id' ";
+    }
+
+    function class_tag($class){
+        echo " class='$class' ";
+    }
+
+
+
+
     
     // string combiner
     function add_str($newStr,&$combineStr){
@@ -73,7 +85,7 @@
         return WrapTag($beforeWrap,$tag);
     }
 
-    function ad_div_creation($std_obj_ad){
+    function ad_div_creation($std_obj_ad,&$arr_elems){
         $job_title = sanitizeInput($std_obj_ad->job_title);
         $brief_description = sanitizeInput($std_obj_ad->brief_description);
         $detail_description = sanitizeInput($std_obj_ad->detail_description);
@@ -83,8 +95,10 @@
         add_str(WrapTag(WrapTag($brief_description,'p'),'div'),$combineStr);
         add_str(WrapTag(WrapTag($detail_description,'p'),'div'),$combineStr);
         add_str(WrapTag(WrapTag($region,'p'),'div'),$combineStr);
-        add_str("<br>",$combineStr);
-        echo WrapTag($combineStr,'div')."<br>";
+        //add_str("<br>",$combineStr);
+        $combineStr = WrapTag($combineStr,'div');
+        array_push($arr_elems,$combineStr);
+
     }
 
     function SwapLogin($num){
@@ -136,6 +150,14 @@
 
 function login_catchup(){
     $_SESSION['Catch_up'] = $_SESSION['Logged']-1;
+}
+
+function check_key_session($key){
+    if (array_key_exists($key , $_SESSION) || !isset($_SESSION[$key])){
+        return false;
+    } else {
+        return true;
+    }
 }
 ?>
 

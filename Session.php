@@ -5,7 +5,7 @@
     require "../general/General_functions.php" : require "general/General_functions.php";
     echo $import;
     
-    
+    createSoapClient();
     if ($_SESSION['Logged'] == 1){
         SwapLogin(1);
     } else {

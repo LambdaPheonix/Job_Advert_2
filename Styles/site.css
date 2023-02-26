@@ -72,6 +72,13 @@ a {
 .func_btn {
     margin: 20px;
     flex: 3;
+    
+}
+
+#func_btns{
+
+    flex-direction: column;
+    padding-top: 0px;
 }
 
 .filter_forms{
@@ -82,4 +89,23 @@ a {
 label, select {
     margin: 5px;
 
+}
+
+#func_btns_heading{
+    padding: 0px 10px;
+    margin-bottom: 0px;
+}
+
+#func_btns_div{
+    padding-top: 0px;
+    margin-top: 0px;
+}
+
+#ads_display {
+    flex-direction: column;
+
+}
+
+div.ads  {
+    border-bottom: 10px #864816;
 }

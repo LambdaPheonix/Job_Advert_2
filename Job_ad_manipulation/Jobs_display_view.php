@@ -13,12 +13,13 @@ require 'Jobs_displayed_processing.php';
     </head>
     <body>
         <div class="back_box" id="display_ad_box">
-            <header class="bg_wide">
-                <h1>Job Adverts availible</h1>
-            </header>
+
             <!-- func_btns -->
             <div class="bg_wide" id="func_btns">
-                <div class="bg_wide" >
+                <div class="bg" id="func_btns_heading">
+                    <h2>Filters for ads:</h2>
+                </div>
+                <div class="bg_wide" id="func_btns_div">
                     <button id="filter" class="func_btn" onclick="displayFilter()">Filter</button>
                     <button id="region filter" class="func_btn" onclick="displayRegion()">Region Filter</button>
                     <button id="unpub_ad" class="func_btn" onclick="displayUnpub()">Unpublised Adverts</button>
@@ -78,6 +79,53 @@ require 'Jobs_displayed_processing.php';
                     </form> <!-- unpub_form -->
                 </div> <!-- unpub_div --> 
             </div>
+            <div class="bg_wide">
+                <h1>Job Adverts availible</h1>
+            </div>   
+            
+            <?php
+                //echo json_encode( $_SESSION['client']). "<br>". json_encode($_SESSION['client_id']);
+                $adverts = getAdvert_f();
+                $ad_elem = array();
+                $output ='';
+                foreach($adverts as $ad){ 
+                ad_div_creation($ad,$ad_elem);
+                }
+                foreach($ad_elem as $elem){
+                    add_str($elem,$output);
+                }
+                echo "<div class='bg_wide ads' id='ads_display'>$output</div>";
+                 ?>
         </div> <!-- display_ad_box -->
         <script src="Job_view_script.js"></script>
     </body>
+
+<?php
+    // clean up the filter data
+    // change the select data to usable data
+    // use the filter data to make job ad clickables
+    // count the clicks on the ad
+
+    // standard load in to screan
+    //$adverts = getAdvert_f();
+    
+    // set vars for filters
+    if($_SERVER['REQUEST_METHOD'] == "POST"){
+        // filter data
+        $field_in = $value_in = $operator_in = '';
+        //if()
+        $field_in = sanitizeInput($_POST['field_in']);
+        $value_in = sanitizeInput($_POST['value_in']);
+        $operator_in = sanitizeInput($_POST['operator_in']);
+        // region data
+        $region = '';
+        $region = sanitizeInput($_POST['region_in']);
+        // unpub data
+        $date_in = '';
+        $date_in = sanitizeInput($_POST['unpub_in']);
+        //if 
+    }
+
+
+
+?>
