@@ -14,6 +14,14 @@
     text-align: center;
 }
 
+.bg_wide {
+    margin: 10px;
+    background-color: rgb(226, 191, 116);
+    width: 75%;
+    padding: 20px;
+    text-align: center;
+}
+
 .back_box{
     flex-direction: column;
     background-color: #864816;
@@ -53,10 +61,25 @@ a {
     color: rgb(37, 34, 1); 
 }
 
-.ivis{
+.invis{
     display: none;
 }
 
 .vis{
-    display: block;
+    display: flex;
+}
+
+.func_btn {
+    margin: 20px;
+    flex: 3;
+}
+
+.filter_forms{
+    display: flex;
+    flex-direction: column;
+}
+
+label, select {
+    margin: 5px;
+
 }

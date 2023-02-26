@@ -91,7 +91,7 @@
 
         $login = "\Job_advert_2\Login\Login_form.php";
         $job_ad = "\Job_advert_2\Job_ad_manipulation\Jobs_display_view.php";
-        $data_ad = "\Job_advert_2\Job_ad_manipulation\Jobs_data.php";
+        $data_ad = "\Job_advert_2\Job_ad_manipulation\Jobs_view_data.php";
         $logout = "\Job_advert_2\Login\LogOut.php";
         $arrPaths_logged = array("Job_Adverts" => $job_ad, "Advert_Data" => $data_ad, "Logout" => $logout);
         $arrPaths_not_logged = array("Job_adverts" => $job_ad, "Login" => $login); 
