@@ -53,29 +53,38 @@
     }
 
     // wraps text in a tag
-    function WrapTag($combineStr,$tag){
+    function WrapTag($combineStr, $tag){    
         return "<$tag>$combineStr</$tag>";
     }
 
-    function named_tag($name){
-        echo " name='$name' ";
+    function WrapTag_attr($combineStr, $tag, $attr_str = null){
+        if ($attr_str == null){
+            return "<$tag>$combineStr</$tag>";
+        } else {
+        return "<$tag $attr_str>$combineStr</$tag>";
+        }
     }
 
-    function id_tag($id){
-        echo " id='$id' ";
+    function add_attr($arr_combo){
+        if ($arr_combo[0]=='' &&  $arr_combo[1]==''){
+            return null;
+        } else {
+        return " $arr_combo[0]='$arr_combo[1]' ";
+        }
     }
 
-    function class_tag($class){
-        echo " class='$class' ";
+    function create_attr_array($attr,$des_attr,&$arr_attr){
+        $arr_combo = array($attr,$des_attr);
+        array_push($arr_combo,$arr_attr);
     }
-
-
-
-
-    
+ 
     // string combiner
     function add_str($newStr,&$combineStr){
+        if ($newStr == null){
+            $combineStr = $combineStr;
+        } else {
         $combineStr = $combineStr.$newStr;
+        }
     }
     
     // gives a href to an 'a' tag and wraps in in any tag you wish
@@ -90,13 +99,18 @@
         $brief_description = sanitizeInput($std_obj_ad->brief_description);
         $detail_description = sanitizeInput($std_obj_ad->detail_description);
         $region = sanitizeInput($std_obj_ad->region);
+        $contact = sanitizeInput($std_obj_ad->consultant_name);
+        $email = sanitizeInput($std_obj_ad->response_email);
         $combineStr = "";
-        add_str(WrapTag(WrapTag($job_title,'p'),'div'),$combineStr);       
-        add_str(WrapTag(WrapTag($brief_description,'p'),'div'),$combineStr);
-        add_str(WrapTag(WrapTag($detail_description,'p'),'div'),$combineStr);
-        add_str(WrapTag(WrapTag($region,'p'),'div'),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Job Title: $job_title",'p'),'div',add_attr(array('class','JT'))),$combineStr);       
+        add_str(WrapTag_attr(WrapTag($brief_description,'p'),'div',add_attr(array('class',"brief"))),$combineStr);
+        add_str(WrapTag_attr(WrapTag_attr("More details",'button',add_attr(array('class',"MD_btn ". $job_title."_btn"))),'div',add_attr(array('class','btn'))),$combineStr);
+        add_str(WrapTag_attr(WrapTag($detail_description,'p'),'div',add_attr(array('class',"detail  $job_title MD_div"))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Region: $region",'p'),'div',add_attr(array('class',"region $job_title MD_div"))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Consultant name: $contact",'p'),'div',add_attr(array('class',"contact $job_title MD_div"))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Response email: $email",'p'),'div',add_attr(array('class',"email $job_title MD_div"))),$combineStr);
         //add_str("<br>",$combineStr);
-        $combineStr = WrapTag($combineStr,'div');
+        $combineStr = WrapTag_attr($combineStr,'section',add_attr(array('class','ad_container')));
         array_push($arr_elems,$combineStr);
 
     }
@@ -159,5 +173,7 @@ function check_key_session($key){
         return true;
     }
 }
+
+
 ?>
 

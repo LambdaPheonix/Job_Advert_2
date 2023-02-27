@@ -8,6 +8,8 @@ On the advert it show the following:
     - job region
     - 
 
+# Please put off your ad blocker as it interfers with the function of the site 
+
 ## How to Install (to use on local computer)
     - clone git to XAMPP/htdocs
     - move "Job_adverts" folder to xampp\mysql\data

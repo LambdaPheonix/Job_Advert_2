@@ -9,7 +9,7 @@ require "/general/Session.php";
     </head>
     <body>
         <?php
-            require 'General_functions.php';
+           // require 'General_functions.php';
             
             display_array($_POST['returnFilter']) ?>
     </body>

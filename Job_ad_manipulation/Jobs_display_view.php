@@ -1,5 +1,5 @@
 <?php
-require 'Jobs_displayed_processing.php';
+require '../Session.php';
 ?>
 
 <!DOCTYPE html>
@@ -7,7 +7,10 @@ require 'Jobs_displayed_processing.php';
     <head>
         <title>Path_maker</title>
     <style>
-        <?php require '../Styles/site.css' ?>
+        <?php 
+            require '../Styles/site.css';
+            require '../Styles/Grid_ad.css';
+         ?>
     </style>
 
     </head>
@@ -87,17 +90,38 @@ require 'Jobs_displayed_processing.php';
                 //echo json_encode( $_SESSION['client']). "<br>". json_encode($_SESSION['client_id']);
                 $adverts = getAdvert_f();
                 $ad_elem = array();
+                $ad_JT = array();
                 $output ='';
                 foreach($adverts as $ad){ 
-                ad_div_creation($ad,$ad_elem);
+                    array_push($ad_JT,$ad->job_title);
+                    ad_div_creation($ad,$ad_elem);
                 }
+               
                 foreach($ad_elem as $elem){
+                
                     add_str($elem,$output);
+                    
                 }
-                echo "<div class='bg_wide ads' id='ads_display'>$output</div>";
+                echo "<div class='ads' id='ads_display'>$output</div>";
                  ?>
         </div> <!-- display_ad_box -->
-        <script src="Job_view_script.js"></script>
+        <script src = "Job_view_script.js"  > </script>
+        <script type="module">
+            import { hideMDDiv, addOnClick_MDbtn } from  "./Job_view_script.js";
+            var arrJTstr = "<?php $combinestr = '';foreach($ad_JT as $JT){ add_str("$JT,",$combinestr);} echo $combinestr;?>";
+            arrJTstr = arrJTstr.substr(0,arrJTstr.length-1);
+            var arrJT = arrJTstr.split(",");
+            //console.log(typeof(arrJTstr) + ':' + typeof(arrJT) + ':' + arrJT);
+            hideMDDiv();
+            var btns = document.querySelectorAll(".MD_btn");
+            for (let i = 0; i < arrJT.length; i++) {
+                const element = arrJT[i];
+                const btn = btns[i];
+                addOnClick_MDbtn(btn,element);
+            }
+                
+               
+        </script>
     </body>
 
 <?php

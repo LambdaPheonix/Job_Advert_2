@@ -1,0 +1,81 @@
+.ad_container{
+    display: grid;
+    grid-template-areas: 
+        "JT brief brief btn"
+        "detail detail detail detail"
+        "region contact email email";
+    grid-template-columns: repeat(4, minmax(50px,1fr));
+    grid-template-rows: auto auto auto;
+    gap: 5px;
+    border: 5px solid #864816;
+    padding: 20px;
+    margin: 10px;
+}
+
+.ads {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 500px;
+    width: 75%;
+    background-color: rgb(226, 191, 116);
+    padding: 20px;
+    margin: 10px;
+}
+
+.JT { 
+    grid-area: JT;
+    border: 2px ;
+    justify-items: center;  
+    border: 2px solid #864816;
+    margin: 2px;
+}
+
+.brief {
+    grid-area: brief;  
+    justify-items: center;
+    align-items: center;
+    border: 2px solid #864816;
+    margin: 2px;
+    padding: 3px;
+}
+
+.detail {
+    grid-area: detail; 
+    justify-items: center;
+    border: 2px solid #864816; 
+    padding: 3px 3px 3px 0px;
+}
+
+.contact{
+    grid-area: contact;   
+    justify-items: center;
+    align-items: center;
+    border: 2px solid #864816;
+    margin: 2px;   
+}
+
+.email {
+    grid-area: email;
+    justify-items: center;
+    align-items: center;
+    border: 2px solid #864816;
+    margin: 2px; 
+}
+
+.region {
+    grid-area: region;   
+    justify-items: center;
+    align-items: center;
+    border: 2px solid #864816; 
+}
+
+.btn {
+    grid-area: btn;  
+    justify-items: center;
+    align-items: center;
+    border: 2px solid #864816;
+    margin: 2px;
+}
+

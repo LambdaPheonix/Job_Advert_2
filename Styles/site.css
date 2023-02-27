@@ -15,10 +15,11 @@
 }
 
 .bg_wide {
-    margin: 10px;
+    
     background-color: rgb(226, 191, 116);
     width: 75%;
     padding: 20px;
+    margin: 10px;
     text-align: center;
 }
 
