@@ -23,9 +23,9 @@ require '../Session.php';
                     <h2>Filters for ads:</h2>
                 </div>
                 <div class="bg_wide" id="func_btns_div">
-                    <button id="filter" class="func_btn" onclick="displayFilter()">Filter</button>
-                    <button id="region filter" class="func_btn" onclick="displayRegion()">Region Filter</button>
-                    <button id="unpub_ad" class="func_btn" onclick="displayUnpub()">Unpublised Adverts</button>
+                    <button id="filter" class="func_btn" >Filter</button>
+                    <button id="region filter" class="func_btn" >Region Filter</button>
+                    <button id="unpub_ad" class="func_btn" >Unpublised Adverts</button>
                 </div>
                
             </div> 
@@ -50,7 +50,7 @@ require '../Session.php';
                                 <option>contains</option>
                             </select>
 
-                            <input type="submit" name="submit">
+                            <input type="submit" name="submit_filter">
                         </form> <!-- filter_form -->
                     </div> <!-- filter_div -->
 
@@ -69,7 +69,7 @@ require '../Session.php';
                                 <option>KwaZulu Natal</option>
                             </select> 
 
-                            <input type="submit" name="submit">
+                            <input type="submit" name="submit_region">
                         </form> <!-- region_form -->
                     </div> <!-- region_div -->
 
@@ -78,7 +78,7 @@ require '../Session.php';
                             <label for="unpub_in">Select a Field</label>
                             <input type="date" id="unpub_in" name="unpub_in">
 
-                            <input type="submit" name="submit">
+                            <input type="submit" name="submit_unpub">
                     </form> <!-- unpub_form -->
                 </div> <!-- unpub_div --> 
             </div>
@@ -88,26 +88,25 @@ require '../Session.php';
             
             <?php
                 //echo json_encode( $_SESSION['client']). "<br>". json_encode($_SESSION['client_id']);
-                $adverts = getAdvert_f();
-                $ad_elem = array();
                 $ad_JT = array();
-                $output ='';
-                foreach($adverts as $ad){ 
-                    array_push($ad_JT,$ad->job_title);
-                    ad_div_creation($ad,$ad_elem);
+                echo isset($_POST['submit_filter'])."<br>";
+                if (isset($_POST['submit_filter'])){
+                    echo display_array($ad_JT).": check 1";
+                    $ad_JT=submit_filter_form();
+                    echo display_array($ad_JT).": check 2";
+                } elseif (isset($_POST['submit_region'])){
+                    $ad_JT = submit_region_form();
                 }
-               
-                foreach($ad_elem as $elem){
-                
-                    add_str($elem,$output);
-                    
-                }
-                echo "<div class='ads' id='ads_display'>$output</div>";
+                //$ad_JT = DisplayFilter_start();
                  ?>
         </div> <!-- display_ad_box -->
         <script src = "Job_view_script.js"  > </script>
         <script type="module">
-            import { hideMDDiv, addOnClick_MDbtn } from  "./Job_view_script.js";
+            // imported functions
+            import { hideMDDiv, DisplayMoreDetails, DisplayMDAd, addOnClick_MDbtn, cleanAdsDisplayDiv, displayFilter, displayRegion, displayUnpub, addClickFuncBtns } from  "./Job_view_script.js";
+            // funcs to func_btns
+            addClickFuncBtns();
+            // DOM assistance
             var arrJTstr = "<?php $combinestr = '';foreach($ad_JT as $JT){ add_str("$JT,",$combinestr);} echo $combinestr;?>";
             arrJTstr = arrJTstr.substr(0,arrJTstr.length-1);
             var arrJT = arrJTstr.split(",");
@@ -120,9 +119,8 @@ require '../Session.php';
                 addOnClick_MDbtn(btn,element);
             }
                 
-               
         </script>
-    </body>
+    
 
 <?php
     // clean up the filter data
@@ -134,22 +132,19 @@ require '../Session.php';
     //$adverts = getAdvert_f();
     
     // set vars for filters
-    if($_SERVER['REQUEST_METHOD'] == "POST"){
-        // filter data
-        $field_in = $value_in = $operator_in = '';
-        //if()
-        $field_in = sanitizeInput($_POST['field_in']);
-        $value_in = sanitizeInput($_POST['value_in']);
-        $operator_in = sanitizeInput($_POST['operator_in']);
+    
+        //getAdvert_f($field_in,$value_in,$operator_in);
+
         // region data
-        $region = '';
-        $region = sanitizeInput($_POST['region_in']);
+
         // unpub data
         $date_in = '';
         $date_in = sanitizeInput($_POST['unpub_in']);
         //if 
-    }
+    
 
 
 
 ?>
+
+</body>

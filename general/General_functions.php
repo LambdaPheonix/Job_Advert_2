@@ -174,6 +174,85 @@ function check_key_session($key){
     }
 }
 
+function DisplayFilter_start($field= 'job_description',$value = '',$op = '='){
+    echo "<script type='module'> import { cleanAdsDisplayDiv } from './Job_view_script.js'; cleanAdsDisplayDiv(); </script>";
+    $adverts = getAdvert_f($field,$value,$op);
+    $ad_elem = array();
+    $ad_JT = array();
+    $output ='';
+    foreach($adverts as $ad){ 
+        array_push($ad_JT,$ad->job_title);
+        ad_div_creation($ad,$ad_elem);
+    }
+    foreach($ad_elem as $elem){
+        add_str($elem,$output);    
+    }
+    echo "<div class='ads' id='ads_display'>$output</div>";
+    return $ad_JT;
+}
+
+function submit_filter_form(){
+    $ad_JT = array();
+    if($_SERVER['REQUEST_METHOD'] == "POST"){
+        // filter data
+        $field_in = $value_in = $operator_in = '';
+
+        $field_in = sanitizeInput($_POST['field_in']);
+        $value_in = sanitizeInput($_POST['value_in']);
+        $operator_in = sanitizeInput($_POST['operator_in']);
+        // changes operator_in to the right format
+        switch ($operator_in) { 
+            case 'equal to':
+                $operator_in = '=';
+                break;
+            
+            case 'not equal':
+                $operator_in = '!=';
+                break;
+            
+            case 'contains':
+                $operator_in = '~';
+                break;
+        }
+        $ad_JT = DisplayFilter_start($field_in,$value_in,$operator_in);
+        unset($_POST['submit_filter']);
+        return $ad_JT;
+    }
+
+    
+}
+
+function DisplayRegion($region = 'Gauteng'){
+    echo "<script type='module'> import { cleanAdsDisplayDiv } from './Job_view_script.js'; cleanAdsDisplayDiv(); </script>";
+    $adverts = getAdvertByRegion($region);
+    $ad_elem = array();
+    $ad_JT = array();
+    $output ='';
+    foreach($adverts as $ad){ 
+        array_push($ad_JT,$ad->job_title);
+        ad_div_creation($ad,$ad_elem);
+    }
+    foreach($ad_elem as $elem){
+        add_str($elem,$output);    
+    }
+    echo "<div class='ads' id='ads_display'>$output</div>";
+    return $ad_JT;
+}
+
+function submit_region_form(){ // populates the region filter and returns the values from the API
+    $ad_JT = array();
+    if($_SERVER['REQUEST_METHOD'] == "POST"){
+        // region data
+        $region = '';
+        $region = sanitizeInput($_POST['region_in']);
+        $ad_JT = DisplayRegion($region);
+        // unset to use again
+        unset($_POST['submit_region']);
+        // returns array of job titles to use a ref for the divs.
+        return $ad_JT;
+    }
+
+}
 
 ?>
 

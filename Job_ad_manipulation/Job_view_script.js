@@ -1,4 +1,4 @@
-export { hideMDDiv, DisplayMoreDetails, DisplayMDAd, addOnClick_MDbtn };
+export { hideMDDiv, DisplayMoreDetails, DisplayMDAd, addOnClick_MDbtn, cleanAdsDisplayDiv, displayFilter, displayRegion, displayUnpub, addClickFuncBtns  };
 
 function makeDisplay(divName){
     // declared all DOM items to use
@@ -16,7 +16,7 @@ function makeDisplay(divName){
     div_filters.classList.add('vis');
     form.classList.add('vis');
 }
-function displayFilter(){
+function displayFilter(){ 
     makeDisplay('filter_div');
 }
 function displayRegion(){
@@ -24,6 +24,15 @@ function displayRegion(){
 }
 function displayUnpub(){
     makeDisplay('unpub_div');
+}
+
+function addClickFuncBtns(){
+    let func_btns = document.querySelectorAll('.func_btn');
+    let arrFuncs = [displayFilter, displayRegion, displayUnpub];
+    for (let i = 0; i < arrFuncs.length; i++) {
+        const element = arrFuncs[i];
+        func_btns[i].addEventListener('click',element);
+    }
 }
 
 var forms = document.querySelectorAll(".filter_forms");
@@ -60,6 +69,16 @@ function hideMDDiv(){
     divs.forEach(elem => {
         elem.classList.add('invis');
     });
+}
+
+function cleanAdsDisplayDiv(){
+    let parent = document.getElementById('display_ad_box');
+    if (parent.lastChild.id == 'ads_display'){
+    var element = document.querySelector('#ads_display').innerHTML = "";
+    element.remove();
+    } else {
+        return;
+    }
 }
 
 

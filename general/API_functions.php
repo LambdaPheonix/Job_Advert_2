@@ -34,29 +34,27 @@ function getAdvertByRegion($region_f){
     $regions[$region->id] = $region->label;
     }
     // Create a regional filter
-    $regional_filter = create_filter('region',array_search($region_f, $regions),'=' );
+    $regional_filter = $regional_filter = array(
+        $region_f => array(
+            'field' => 'region',
+            'operator' => '=',
+            'value' => array_search($region_f, $regions)));
 
-    // $regional_filter = array(
-    //     $region_f => array(
-    // 'field' => 'region',
-    // 'operator' => '=',
-    // 'value' => array_search($region_f, $regions)
-    // )
-    // );
     // retrieve vacancies
     $vacancies_in = array();
     $vacancies_in[$region_f] = $_SESSION['client']->getAdverts(
         $_SESSION['client_id'],
         array($regional_filter[$region_f])
     );
-    return $vacancies_in;
+    $returnArr = array();
+    $returnArr = array_pop($vacancies_in);
+    return $returnArr;
 }
 
 function getAdvert_f($field= 'job_description',$value = '',$operator = '='){
     $php_filter = create_filter($field,$value,$operator);
     $vacancies = $_SESSION['client']->getAdverts($_SESSION['client_id'], $php_filter);
     return $vacancies;
-
 }
 
 function getUnpublised($date = '2023-02-01'){
@@ -67,11 +65,9 @@ function getUnpublised($date = '2023-02-01'){
 // not done
 function upload_towns_to_db(){ // to move all towns into a db 
     $regions_all = array();
-    foreach($_SESSION['client'] as $obj){
-        
+    foreach($_SESSION['client'] as $obj){       
     }
     $region=0;
-
     // connect to db and save all regions to it
     $conn = mysqli_connect($GLOBALS['server'],$GLOBALS['username'],$GLOBALS['PW'],$GLOBALS['db']);
     $sql = "INSERT INTO tbl_towns (`town_id`,`town_name`) VALUES (Null,'$region')";
