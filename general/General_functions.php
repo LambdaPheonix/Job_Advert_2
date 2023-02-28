@@ -3,6 +3,7 @@
     require "../Server_details.php";
     //require "Session.php";
     require "API_functions.php";
+    require "Records_functions.php";
     // global vars to use in general functions
 
     // checks the username and password returns boolean
@@ -115,6 +116,31 @@
 
     }
 
+    function unpub_ad_div_creation($std_obj_ad,&$arr_elems){
+        $job_title = sanitizeInput($std_obj_ad->job_title);
+        $vacancy_ref = sanitizeInput($std_obj_ad->vacancy_ref);
+        $start_date = sanitizeInput($std_obj_ad->start_date);
+        $end_date = sanitizeInput($std_obj_ad->end_date);
+        $last_mod = sanitizeInput($std_obj_ad->last_modified_date);
+        $combineStr = "";
+        add_str(WrapTag_attr(WrapTag("Job Title: $job_title",'p'),'div',add_attr(array('class','JT'))),$combineStr);       
+        add_str(WrapTag_attr(WrapTag("Vacancy referance: $vacancy_ref",'p'),'div',add_attr(array('class','detail'))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Date posted: $start_date",'p'),'div',add_attr(array('class','contact'))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Date removed: $end_date",'p'),'div',add_attr(array('class','email'))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Last date modifed: $last_mod",'p'),'div',add_attr(array('class','brief'))),$combineStr);
+        //add_str("<br>",$combineStr);
+        $combineStr = WrapTag_attr($combineStr,'section',add_attr(array('class','ad_container')));
+        array_push($arr_elems,$combineStr);
+        //echo json_encode($std_obj_ad);
+    }
+
+    // to make the API client swap users
+    function Login_API($uname,$psw){
+        unset($_SESSION['client']);
+        unset($_SESSION['client_id']);
+        createSoapClient($uname,$psw);
+    }
+
     function SwapLogin($num){
 
         $login = "\Job_advert_2\Login\Login_form.php";
@@ -138,7 +164,7 @@
                 }
                 $ul = WrapTag($combineStr,'ul');
                 $nav = WrapTag($ul,'nav');
-                $div = WrapTag($nav,'div');
+                $div = WrapTag_attr($nav,'div',array('id',"nav_div"));
                 echo $div;
                 }
         
@@ -203,7 +229,7 @@ function submit_filter_form(){
         // changes operator_in to the right format
         switch ($operator_in) { 
             case 'equal to':
-                $operator_in = '=';
+                $operator_in = 'exact';
                 break;
             
             case 'not equal':
@@ -217,9 +243,7 @@ function submit_filter_form(){
         $ad_JT = DisplayFilter_start($field_in,$value_in,$operator_in);
         unset($_POST['submit_filter']);
         return $ad_JT;
-    }
-
-    
+    }    
 }
 
 function DisplayRegion($region = 'Gauteng'){
@@ -239,6 +263,23 @@ function DisplayRegion($region = 'Gauteng'){
     return $ad_JT;
 }
 
+function DisplayUnpub($date = '2023-02-01'){ // date needs to be in yyyy-ii-dd
+    echo "<script type='module'> import { cleanAdsDisplayDiv } from './Job_view_script.js'; cleanAdsDisplayDiv(); </script>";
+    $adverts = getUnpublised($date);
+    $ad_elem = array();
+    $ad_JT = array();
+    $output ='';
+    foreach($adverts as $ad){ 
+        array_push($ad_JT,$ad->job_title);
+        unpub_ad_div_creation($ad,$ad_elem);
+    }
+    foreach($ad_elem as $elem){
+        add_str($elem,$output);    
+    }
+    echo "<div class='ads' id='ads_display'>$output</div>";
+    return $ad_JT;
+}
+
 function submit_region_form(){ // populates the region filter and returns the values from the API
     $ad_JT = array();
     if($_SERVER['REQUEST_METHOD'] == "POST"){
@@ -248,6 +289,24 @@ function submit_region_form(){ // populates the region filter and returns the va
         $ad_JT = DisplayRegion($region);
         // unset to use again
         unset($_POST['submit_region']);
+        // returns array of job titles to use a ref for the divs.
+        return $ad_JT;
+    }
+
+}
+
+function submit_unpub_form(){ // populates the region filter and returns the values from the API
+    $ad_JT = array();
+    if($_SERVER['REQUEST_METHOD'] == "POST"){
+        // region data
+        $date_in = '';
+        $date_in = sanitizeInput($_POST['unpub_in']);
+        $date_in = "$date_in 00:00:00";
+        //echo $date_in;
+        $ad_JT = DisplayUnpub($date_in);
+        
+        // unset to use again
+        unset($_POST['submit_unpub']);
         // returns array of job titles to use a ref for the divs.
         return $ad_JT;
     }

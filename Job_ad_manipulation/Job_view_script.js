@@ -1,4 +1,7 @@
+//import { Ad_record } from "Record_clicks.js";
+
 export { hideMDDiv, DisplayMoreDetails, DisplayMDAd, addOnClick_MDbtn, cleanAdsDisplayDiv, displayFilter, displayRegion, displayUnpub, addClickFuncBtns  };
+
 
 function makeDisplay(divName){
     // declared all DOM items to use
@@ -52,15 +55,29 @@ function DisplayMDAd(JT){
 }
 
 // displays the current clicked btns divs and hides all others
-function DisplayMoreDetails(JT){
+function DisplayMoreDetails(JT,Cls_ad){
+    let btn = document.querySelector('.'+JT+'_btn');
     hideMDDiv();
-    DisplayMDAd(JT);
-    
+
+    console.log(btn.classList.contains('open'));
+    if (btn.classList.contains('open')){
+        btn.classList.remove('open');
+    } else{
+        DisplayMDAd(JT);
+        Cls_ad.onClickBtn(JT);  
+        btn.classList.add('open');
+    }
 }
 
 // init add event listeners 
-function addOnClick_MDbtn(btn,elemName){  
-        btn.addEventListener('click', function(){DisplayMoreDetails(elemName);});
+function addOnClick_MDbtn(btn,elemName,Cls_ad){  
+    if (btn != undefined){
+        btn.addEventListener('click', function(){DisplayMoreDetails(elemName,Cls_ad);});
+    }
+    else{
+        console.log("no btns found");
+        return;
+    }
 }
 
 // hides all more details divs.
@@ -80,16 +97,3 @@ function cleanAdsDisplayDiv(){
         return;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

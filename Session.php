@@ -4,7 +4,9 @@
     $import = ( file_exists("../general/General_functions.php")) ? 
     require "../general/General_functions.php" : require "general/General_functions.php";
     echo $import;
-    
+    if (!(isset($_SESSION['client']))){
+        createSoapClient();
+    }
     createSoapClient();
     if ($_SESSION['Logged'] == 1){
         SwapLogin(1);

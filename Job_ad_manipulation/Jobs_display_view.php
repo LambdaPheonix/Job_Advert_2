@@ -89,13 +89,13 @@ require '../Session.php';
             <?php
                 //echo json_encode( $_SESSION['client']). "<br>". json_encode($_SESSION['client_id']);
                 $ad_JT = array();
-                echo isset($_POST['submit_filter'])."<br>";
                 if (isset($_POST['submit_filter'])){
-                    echo display_array($ad_JT).": check 1";
                     $ad_JT=submit_filter_form();
-                    echo display_array($ad_JT).": check 2";
+                    
                 } elseif (isset($_POST['submit_region'])){
                     $ad_JT = submit_region_form();
+                } elseif (isset($_POST['submit_unpub'])){
+                    $ad_JT = submit_unpub_form();
                 }
                 //$ad_JT = DisplayFilter_start();
                  ?>
@@ -104,20 +104,27 @@ require '../Session.php';
         <script type="module">
             // imported functions
             import { hideMDDiv, DisplayMoreDetails, DisplayMDAd, addOnClick_MDbtn, cleanAdsDisplayDiv, displayFilter, displayRegion, displayUnpub, addClickFuncBtns } from  "./Job_view_script.js";
+            import { Ad_record, todayDate } from "./Record_clicks.js";
             // funcs to func_btns
             addClickFuncBtns();
             // DOM assistance
             var arrJTstr = "<?php $combinestr = '';foreach($ad_JT as $JT){ add_str("$JT,",$combinestr);} echo $combinestr;?>";
             arrJTstr = arrJTstr.substr(0,arrJTstr.length-1);
             var arrJT = arrJTstr.split(",");
+            var arrCls_ads = [];
             //console.log(typeof(arrJTstr) + ':' + typeof(arrJT) + ':' + arrJT);
             hideMDDiv();
             var btns = document.querySelectorAll(".MD_btn");
             for (let i = 0; i < arrJT.length; i++) {
                 const element = arrJT[i];
                 const btn = btns[i];
-                addOnClick_MDbtn(btn,element);
+                
+                arrCls_ads[i] = new Ad_record(element,todayDate());
+                addOnClick_MDbtn(btn,element,arrCls_ads[i]);
+                
             }
+            console.log(btns[1].getAttribute('onclick'));
+            //document.querySelector('body').addEventListener('unload',dump_session_csv);
                 
         </script>
     
@@ -138,8 +145,7 @@ require '../Session.php';
         // region data
 
         // unpub data
-        $date_in = '';
-        $date_in = sanitizeInput($_POST['unpub_in']);
+
         //if 
     
 

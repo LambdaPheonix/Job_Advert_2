@@ -4,9 +4,7 @@
 function createSoapClient($username = 'parallel',$password = 'parallel'){ // connects to SOAP API and returns a client.
     // define WSDL location
     $wsdl = "https://webapp.placementpartner.com/ws/clients/?wsdl";
-    // provided by Parallel Software
-    //$username = 'parallel';
-    //$password = 'parallel';
+
     // create SOAP Client
     $client = new SoapClient($wsdl);
     // Authenticate with username and password
@@ -58,7 +56,7 @@ function getAdvert_f($field= 'job_description',$value = '',$operator = '='){
 }
 
 function getUnpublised($date = '2023-02-01'){
-    $adverts = $_SESSION['client']->getUnpublishedAdverts($_SESSION['client_id'], "2020-01-01 00:00:00");
+    $adverts = $_SESSION['client']->getUnpublishedAdverts($_SESSION['client_id'], $date);
     return $adverts;
 }
 
