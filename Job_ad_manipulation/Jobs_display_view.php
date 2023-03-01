@@ -100,11 +100,11 @@ require '../Session.php';
                 //$ad_JT = DisplayFilter_start();
                  ?>
         </div> <!-- display_ad_box -->
-        <script src = "Job_view_script.js"  > </script>
+        <script type="module" src = "Job_view_script.js"  > </script>
         <script type="module">
             // imported functions
             import { hideMDDiv, DisplayMoreDetails, DisplayMDAd, addOnClick_MDbtn, cleanAdsDisplayDiv, displayFilter, displayRegion, displayUnpub, addClickFuncBtns } from  "./Job_view_script.js";
-            import { Ad_record, todayDate } from "./Record_clicks.js";
+            import { Ad_record, todayDate, uploadUnseenADs } from "./Record_clicks.js";
             // funcs to func_btns
             addClickFuncBtns();
             // DOM assistance
@@ -112,6 +112,7 @@ require '../Session.php';
             arrJTstr = arrJTstr.substr(0,arrJTstr.length-1);
             var arrJT = arrJTstr.split(",");
             var arrCls_ads = [];
+            uploadUnseenADs('parallel');
             //console.log(typeof(arrJTstr) + ':' + typeof(arrJT) + ':' + arrJT);
             hideMDDiv();
             var btns = document.querySelectorAll(".MD_btn");

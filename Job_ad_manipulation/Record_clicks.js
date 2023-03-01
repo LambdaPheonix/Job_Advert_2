@@ -5,6 +5,9 @@
 //    format (click_count,job_title/vancany ref,date);
             // vacancy ref will be captured when the btns are created in form (JT,VR)
 //  once the page is closed the data in the csv is retrieved and updated to the db
+import { connectDB } from "../serverDetail.js";
+//import { createConnection } from "mysql";
+
 export class Ad_record {
 
     #jobTitle;
@@ -101,3 +104,84 @@ export function todayDate(){
 }
 
 
+function createUpdateQuery(arrCls){
+    // gonna update all overall clicks (will try make it do it in one go)
+        // recieves an arr of class Ad_record
+        // takes clicks in from class
+        // create new array with all classes that have clicks
+        
+        // create SQL that adds clicks to jt that has clicks added.
+    let arrCls_with = [];
+    arrCls.forEach(Cls => { // puts out any none used classes
+        if (Cls.clickCount > 0){
+            arrCls_with.push(Cls);
+        }
+    });   
+    if(arrCls_with.length >0){
+        let WhenStmtStr = "";
+        arrCls.forEach(Cls => { // makes all the When statements needed for the SQL case
+            WhenStmtStr += makeWhen(Cls);
+        });
+        // 
+        let WhereList = listWhere(arrCls_with);
+        // puts SQL elements together to use
+        let SQL = makeSQL_update_case('tbl_clicks','job_title','Clicks',WhenStmtStr,WhereList);
+        console.log(SQL);
+        // connect to db
+        let con = connectDB();
+        con.connect(function(err) {
+            if (err) throw err;
+            con.query(SQL, function(err, result){
+                if (err) throw err;
+                console.log(result.affectedRows + " records(s) updated");
+            });
+        });
+
+    } else {
+        console.log('no classes updated');
+        return;
+    }
+    con.end;   
+}
+
+// makes a when statement for the sql in str form
+function makeWhen(Cls){
+    let JT = Cls.jobTitle;
+    let clicks = Cls.clickCount;
+    let returnStr = "WHEN '"+JT+"' THEN Clicks + "+clicks;
+    return returnStr;
+}
+
+// makes a list of where statments in str form
+function listWhere(arrCls){
+    let returnStr = "";
+    arrCls.forEach(Cls => {
+        returnStr += "'"+ Cls.jobTitle + "', ";
+    }); 
+    returnStr = returnStr.substr(0,returnStr.length-2);
+    return returnStr;
+}
+
+// makes SQL for the updating of the total clicks
+function makeSQL_update_case(tbl,columnKey,columnValue,WhenStmtStr,WhereList){
+    SQL = '';
+    SQL = "UPDATE " + tbl + " SET " + columnValue + " = CASE " + columnKey 
+        + WhenStmtStr + " ELSE " + columnValue + " END WHERE "
+        + columnKey + " IN( " + WhereList + " );";
+    return SQL;
+}
+
+export function uploadUnseenADs(uname,jt,vacancy_ref){
+    let con = connectDB();
+    let sql = "Select companyName from tbl_users where username = '" + uname + "';";
+    //let companyName = '';
+    con.query(sql, (err,results,fields) =>{
+        if (err) throw err;
+        console.log(results);
+        console.log(fields);
+       // var res = results;
+       // var fields_q = fields; 
+    });
+    //companyName = res;
+
+}

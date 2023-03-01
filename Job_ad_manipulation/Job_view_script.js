@@ -1,4 +1,5 @@
 //import { Ad_record } from "Record_clicks.js";
+//import { createConnection } from "mysql";
 
 export { hideMDDiv, DisplayMoreDetails, DisplayMDAd, addOnClick_MDbtn, cleanAdsDisplayDiv, displayFilter, displayRegion, displayUnpub, addClickFuncBtns  };
 
