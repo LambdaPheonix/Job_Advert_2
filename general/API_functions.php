@@ -60,16 +60,4 @@ function getUnpublised($date = '2023-02-01'){
     return $adverts;
 }
 
-// not done
-function upload_towns_to_db(){ // to move all towns into a db 
-    $regions_all = array();
-    foreach($_SESSION['client'] as $obj){       
-    }
-    $region=0;
-    // connect to db and save all regions to it
-    $conn = mysqli_connect($GLOBALS['server'],$GLOBALS['username'],$GLOBALS['PW'],$GLOBALS['db']);
-    $sql = "INSERT INTO tbl_towns (`town_id`,`town_name`) VALUES (Null,'$region')";
-    $query = mysqli_query($conn,$sql);
-    mysqli_close($conn);
 
-}

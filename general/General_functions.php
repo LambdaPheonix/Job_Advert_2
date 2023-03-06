@@ -1,6 +1,6 @@
 <?php
     // includes server details for mySQL functions
-    require "../Server_details.php";
+    //require "../Server_details.php";
     //require "Session.php";
     require "API_functions.php";
     require "Records_functions.php";
@@ -9,7 +9,7 @@
     // checks the username and password returns boolean
     function check_username_password($uname,$psw,$tbl,&$msg){
         // connects to db
-        $conn =  mysqli_connect($GLOBALS['server'],$GLOBALS['user'],$GLOBALS['PW'],$GLOBALS['db']) or die("could not connect to db". mysqli_connect_error());
+        $conn = create_connection();
         // sql to get password from username
         $sql = "SELECT username, password FROM $tbl WHERE username = '$uname' ";
         // check if password matches
@@ -47,7 +47,7 @@
         return $beforeSanitize;      
     }
 
-    function display_array($arr){
+    function display_array($arr){ // turns array into a str
         foreach($arr as $elem){
             echo "<br>".$elem;
         }
@@ -66,6 +66,7 @@
         }
     }
 
+    // makes a string to add a atrribue to a html var
     function add_attr($arr_combo){
         if ($arr_combo[0]=='' &&  $arr_combo[1]==''){
             return null;
@@ -74,11 +75,6 @@
         }
     }
 
-    function create_attr_array($attr,$des_attr,&$arr_attr){
-        $arr_combo = array($attr,$des_attr);
-        array_push($arr_combo,$arr_attr);
-    }
- 
     // string combiner
     function add_str($newStr,&$combineStr){
         if ($newStr == null){
@@ -95,6 +91,7 @@
         return WrapTag($beforeWrap,$tag);
     }
 
+    // creates divs for adverts according to filters 
     function ad_div_creation($std_obj_ad,&$arr_elems){
         $job_title = sanitizeInput($std_obj_ad->job_title);
         $brief_description = sanitizeInput($std_obj_ad->brief_description);
@@ -116,6 +113,7 @@
 
     }
 
+    // creates divs for ads according to unpub filter
     function unpub_ad_div_creation($std_obj_ad,&$arr_elems){
         $job_title = sanitizeInput($std_obj_ad->job_title);
         $vacancy_ref = sanitizeInput($std_obj_ad->vacancy_ref);
@@ -141,6 +139,7 @@
         createSoapClient($uname,$psw);
     }
 
+    // makes different nav bars for logged in or not
     function SwapLogin($num){
 
         $login = "\Job_advert_2\Login\Login_form.php";
@@ -188,18 +187,7 @@
             //echo '<br>' . WrapTag($_SESSION['Logged'],'h1');
             }
 
-function login_catchup(){
-    $_SESSION['Catch_up'] = $_SESSION['Logged']-1;
-}
-
-function check_key_session($key){
-    if (array_key_exists($key , $_SESSION) || !isset($_SESSION[$key])){
-        return false;
-    } else {
-        return true;
-    }
-}
-
+// creates div for ads
 function DisplayFilter_start($field= 'job_description',$value = '',$op = '='){
     echo "<script type='module'> import { cleanAdsDisplayDiv } from './Job_view_script.js'; cleanAdsDisplayDiv(); </script>";
     $adverts = getAdvert_f($field,$value,$op);
@@ -217,6 +205,7 @@ function DisplayFilter_start($field= 'job_description',$value = '',$op = '='){
     return $ad_JT;
 }
 
+// makes filter for ad in filter btn
 function submit_filter_form(){
     $ad_JT = array();
     if($_SERVER['REQUEST_METHOD'] == "POST"){
@@ -246,6 +235,7 @@ function submit_filter_form(){
     }    
 }
 
+// makes filter for region btn filter
 function DisplayRegion($region = 'Gauteng'){
     echo "<script type='module'> import { cleanAdsDisplayDiv } from './Job_view_script.js'; cleanAdsDisplayDiv(); </script>";
     $adverts = getAdvertByRegion($region);
@@ -263,6 +253,7 @@ function DisplayRegion($region = 'Gauteng'){
     return $ad_JT;
 }
 
+// makes filter for unpub ads btn filter
 function DisplayUnpub($date = '2023-02-01'){ // date needs to be in yyyy-ii-dd
     echo "<script type='module'> import { cleanAdsDisplayDiv } from './Job_view_script.js'; cleanAdsDisplayDiv(); </script>";
     $adverts = getUnpublised($date);
@@ -279,6 +270,7 @@ function DisplayUnpub($date = '2023-02-01'){ // date needs to be in yyyy-ii-dd
     echo "<div class='ads' id='ads_display'>$output</div>";
     return $ad_JT;
 }
+
 
 function submit_region_form(){ // populates the region filter and returns the values from the API
     $ad_JT = array();

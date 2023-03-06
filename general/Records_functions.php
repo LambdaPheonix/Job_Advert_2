@@ -1,5 +1,7 @@
 <?php
-    require "../Server_details.php";
+        $import = ( file_exists("../Server_details.php")) ? 
+        require "../Server_details.php" : require "./Server_details.php";
+        echo $import;
 // holds the functions to make the data saveable and displayable
 // 
 
@@ -69,7 +71,7 @@ function jt_daily_clicks($jt,$conn){ // returns arr of arrays in form (clicks,da
 
 // exports all ad data for a company to 2 csv files 1 containing all the overall clicks and the next with all the dailies
 function db_exportdata($uname){ 
-    $conn = mysqli_connect($GLOBALS['server'],$GLOBALS['user'],$GLOBALS['PW'],$GLOBALS['db']) or die(mysqli_connect_error());
+    $conn = create_connection();
     $companyname = get_company_name($uname,$conn);
     $arr_jt = company_ads_arr($companyname,$conn);
     $jt_overall_clicks = array();

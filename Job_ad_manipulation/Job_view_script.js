@@ -1,10 +1,11 @@
-//import { Ad_record } from "Record_clicks.js";
-//import { createConnection } from "mysql";
+// imports files/ functions
+import { sendData, todayDate } from "./Record_clicks.js";
 
+//exports functions
 export { hideMDDiv, DisplayMoreDetails, DisplayMDAd, addOnClick_MDbtn, cleanAdsDisplayDiv, displayFilter, displayRegion, displayUnpub, addClickFuncBtns  };
 
 
-function makeDisplay(divName){
+function makeDisplay(divName){ // makes filter btns display via divs
     // declared all DOM items to use
     //let btn = document.querySelector('#' + btnName);
     let div_filters = document.querySelector('#filters_bg');
@@ -20,17 +21,19 @@ function makeDisplay(divName){
     div_filters.classList.add('vis');
     form.classList.add('vis');
 }
-function displayFilter(){ 
+
+function displayFilter(){  // function to make DOM easier
     makeDisplay('filter_div');
 }
-function displayRegion(){
+function displayRegion(){ // function to make DOM easier
     makeDisplay('region_div');
 }
-function displayUnpub(){
+function displayUnpub(){ // function to make DOM easier
     makeDisplay('unpub_div');
 }
 
-function addClickFuncBtns(){
+// adds click function to to display filters on function btns
+function addClickFuncBtns(){ // makes filter buttons
     let func_btns = document.querySelectorAll('.func_btn');
     let arrFuncs = [displayFilter, displayRegion, displayUnpub];
     for (let i = 0; i < arrFuncs.length; i++) {
@@ -47,16 +50,18 @@ var forms = document.querySelectorAll(".filter_forms");
     filter_div.classList.add("invis");
 
 
-function DisplayMDAd(JT){
+function DisplayMDAd(JT){ // displays extra details on ad 
     // JT = Job Title
     var elems = document.querySelectorAll('.'+JT);
     elems.forEach(elem => {
+        // makes extra details visible
        elem.classList.remove('invis'); 
     });
+
 }
 
 // displays the current clicked btns divs and hides all others
-function DisplayMoreDetails(JT,Cls_ad){
+function DisplayMoreDetails(JT,$uname){
     let btn = document.querySelector('.'+JT+'_btn');
     hideMDDiv();
 
@@ -64,16 +69,22 @@ function DisplayMoreDetails(JT,Cls_ad){
     if (btn.classList.contains('open')){
         btn.classList.remove('open');
     } else{
-        DisplayMDAd(JT);
-        Cls_ad.onClickBtn(JT);  
+        DisplayMDAd(JT); 
         btn.classList.add('open');
+        // creates data to send to server
+        let date = todayDate();
+        let data = [JT,date,$uname];
+        console.log(date);
+        data = JSON.stringify(data); // data has to be JSON
+        // sends data to server
+        sendData(data);
     }
 }
 
 // init add event listeners 
-function addOnClick_MDbtn(btn,elemName,Cls_ad){  
+function addOnClick_MDbtn(btn,elemName,$uname){  
     if (btn != undefined){
-        btn.addEventListener('click', function(){DisplayMoreDetails(elemName,Cls_ad);});
+        btn.addEventListener('click', function(){DisplayMoreDetails(elemName,$uname);});
     }
     else{
         console.log("no btns found");
@@ -89,7 +100,7 @@ function hideMDDiv(){
     });
 }
 
-function cleanAdsDisplayDiv(){
+function cleanAdsDisplayDiv(){ // cleans up the div for new filter results
     let parent = document.getElementById('display_ad_box');
     if (parent.lastChild.id == 'ads_display'){
     var element = document.querySelector('#ads_display').innerHTML = "";

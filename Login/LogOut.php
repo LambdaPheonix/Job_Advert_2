@@ -1,14 +1,12 @@
 <?php
 require '../Session.php';
 ?>
-<script>
-    var nav_div = document.getElementsByid('nav_div');
-    nav.remove();
-</script>
 <?php
-unset($_SESSION['Logged']);
-$_SESSION['Logged'] = 0;
-SwapLogin(0);
+    unset($_SESSION['Logged']);
+    $_SESSION['Logged'] = 0;
+    unset($_SESSION['uname']);
+    header('Location: http://localhost/Job_advert_2/index.php');
+    exit();
 ?>
 <style>
     <?php require '../Styles/site.css';?>

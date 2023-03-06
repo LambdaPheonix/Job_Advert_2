@@ -25,7 +25,7 @@ require '../Session.php';
                 <div class="bg_wide" id="func_btns_div">
                     <button id="filter" class="func_btn" >Filter</button>
                     <button id="region filter" class="func_btn" >Region Filter</button>
-                    <button id="unpub_ad" class="func_btn" >Unpublised Adverts</button>
+                    <button id="unpub_ad" class="func_btn Login invis" >Unpublised Adverts</button>
                 </div>
                
             </div> 
@@ -104,33 +104,41 @@ require '../Session.php';
         <script type="module">
             // imported functions
             import { hideMDDiv, DisplayMoreDetails, DisplayMDAd, addOnClick_MDbtn, cleanAdsDisplayDiv, displayFilter, displayRegion, displayUnpub, addClickFuncBtns } from  "./Job_view_script.js";
-            import { Ad_record, todayDate, uploadUnseenADs } from "./Record_clicks.js";
+            import { sendData, todayDate, uploadUnseenADs } from "./Record_clicks.js";
             // funcs to func_btns
             addClickFuncBtns();
             // DOM assistance
+           
+            
             var arrJTstr = "<?php $combinestr = '';foreach($ad_JT as $JT){ add_str("$JT,",$combinestr);} echo $combinestr;?>";
             arrJTstr = arrJTstr.substr(0,arrJTstr.length-1);
             var arrJT = arrJTstr.split(",");
-            var arrCls_ads = [];
-            uploadUnseenADs('parallel');
-            //console.log(typeof(arrJTstr) + ':' + typeof(arrJT) + ':' + arrJT);
-            hideMDDiv();
+            var $uname = "<?php $uname = (!isset($_POST['uname']))?'parallel':$_POST['uname'];echo $uname ?>";
+            hideMDDiv(); // hides more dtails
+            // adds onclick to more detail buttons
             var btns = document.querySelectorAll(".MD_btn");
             for (let i = 0; i < arrJT.length; i++) {
                 const element = arrJT[i];
-                const btn = btns[i];
-                
-                arrCls_ads[i] = new Ad_record(element,todayDate());
-                addOnClick_MDbtn(btn,element,arrCls_ads[i]);
-                
+                const btn = btns[i];      
+                addOnClick_MDbtn(btn,element,$uname);
             }
-            console.log(btns[1].getAttribute('onclick'));
-            //document.querySelector('body').addEventListener('unload',dump_session_csv);
-                
+
         </script>
     
-
+            <div id="dump"></div>
 <?php
+
+    if(isset($_SESSION['Logged'])){
+        if ($_SESSION['Logged'] == 1){
+           echo "<script> document.querySelector('.Login').classList.remove('invis'); </script>";
+
+        } else {
+            echo "<script> document.querySelector('.Login').classList.add('invis'); </script>";
+        }
+    }else{
+        echo "<script> document.querySelector('.Login').classList.add('invis'); </script>";
+
+    }
     // clean up the filter data
     // change the select data to usable data
     // use the filter data to make job ad clickables
