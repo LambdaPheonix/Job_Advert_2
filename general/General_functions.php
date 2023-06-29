@@ -7,16 +7,19 @@
     // global vars to use in general functions
 
     // checks the username and password returns boolean
-    function check_username_password($uname,$psw,$tbl,&$msg){
+    function check_username_password($uname,$psw,$tbl,&$msg)
+    {
         // connects to db
         $conn = create_connection();
         // sql to get password from username
         $sql = "SELECT username, password FROM $tbl WHERE username = '$uname' ";
         // check if password matches
         if ($query =  mysqli_query($conn,$sql)) {
-            if (mysqli_num_rows($query)>0){    
+            if (mysqli_num_rows($query)>0)
+            {    
                 $row = mysqli_fetch_assoc($query);
-                if ($uname == $row['username']  && $psw == $row['password']){
+                if ($uname == $row['username']  && $psw == $row['password'])
+                {
                     $msg = "login Success";
                     return true;     
                 } else {
@@ -35,13 +38,16 @@
         mysqli_close($conn);
     }
 
-    function echo_msg($msg){ // creates and alert out of a message
+    function echo_msg($msg)
+    { // creates and alert out of a message
         echo "<script>alert('$msg');
         </script>";
     }
 
-    function sanitizeInput($beforeSanitize){ // cleans input from any  unwanted chars or XSS
-        if(gettype($beforeSanitize) != "string"){
+    function sanitizeInput($beforeSanitize)
+    { // cleans input from any  unwanted chars or XSS
+        if(gettype($beforeSanitize) != "string")
+        {
             $beforeSanitize = "was not a string";
         }
         $beforeSanitize = trim($beforeSanitize);
@@ -50,19 +56,24 @@
         return $beforeSanitize;      
     }
 
-    function display_array($arr){ // turns array into a str
-        foreach($arr as $elem){
+    function display_array($arr)
+    { // turns array into a str
+        foreach($arr as $elem)
+        {
             echo "<br>".$elem;
         }
     }
 
     // wraps text in a tag
-    function WrapTag($combineStr, $tag){    
+    function WrapTag($combineStr, $tag)
+    {    
         return "<$tag>$combineStr</$tag>";
     }
 
-    function WrapTag_attr($combineStr, $tag, $attr_str = null){
-        if ($attr_str == null){
+    function WrapTag_attr($combineStr, $tag, $attr_str = null)
+    {
+        if ($attr_str == null)
+        {
             return "<$tag>$combineStr</$tag>";
         } else {
         return "<$tag $attr_str>$combineStr</$tag>";
@@ -70,8 +81,10 @@
     }
 
     // makes a string to add a atrribue to a html var
-    function add_attr($arr_combo){
-        if ($arr_combo[0]=='' &&  $arr_combo[1]==''){
+    function add_attr($arr_combo)
+    {
+        if ($arr_combo[0]=='' &&  $arr_combo[1]=='')
+        {
             return null;
         } else {
         return " $arr_combo[0]='$arr_combo[1]' ";
@@ -79,8 +92,10 @@
     }
 
     // string combiner
-    function add_str($newStr,&$combineStr){
-        if ($newStr == null){
+    function add_str($newStr,&$combineStr)
+    {
+        if ($newStr == null)
+        {
             $combineStr = $combineStr;
         } else {
         $combineStr = $combineStr.$newStr;
@@ -88,15 +103,16 @@
     }
     
     // gives a href to an 'a' tag and wraps in in any tag you wish
-    function aTag_href($path,$label,$tag){
+    function aTag_href($path,$label,$tag)
+    {
         $href = "href='$path'";
         $beforeWrap = "<a $href >$label</a>";
         return WrapTag($beforeWrap,$tag);
     }
 
     // creates divs for adverts according to filters 
-    function ad_div_creation($std_obj_ad,&$arr_elems){
-
+    function ad_div_creation($std_obj_ad,&$arr_elems)
+    {
         $job_title = sanitizeInput($std_obj_ad->job_title);
         $brief_description = sanitizeInput($std_obj_ad->brief_description);
         $detail_description = sanitizeInput($std_obj_ad->detail_description);
@@ -118,8 +134,10 @@
     }
 
     // creates divs for ads according to unpub filter
-    function unpub_ad_div_creation($std_obj_ad,&$arr_elems){
+    function unpub_ad_div_creation($std_obj_ad,&$arr_elems)
+    {
         $job_title = sanitizeInput($std_obj_ad->job_title);
+
         $vacancy_ref = sanitizeInput($std_obj_ad->vacancy_ref);
         $start_date = sanitizeInput($std_obj_ad->start_date);
         $end_date = sanitizeInput($std_obj_ad->end_date);
@@ -137,14 +155,16 @@
     }
 
     // to make the API client swap users
-    function Login_API($uname,$psw){
+    function Login_API($uname,$psw)
+    {
         unset($_SESSION['client']);
         unset($_SESSION['client_id']);
         createSoapClient($uname,$psw);
     }
 
     // makes different nav bars for logged in or not
-    function SwapLogin($num){
+    function SwapLogin($num)
+    {
 
         $login = "\Job_advert_2\Login\Login_form.php";
         $job_ad = "\Job_advert_2\Job_ad_manipulation\Jobs_display_view.php";
@@ -192,17 +212,20 @@
             }
 
 // creates div for ads
-function DisplayFilter_start($field= 'job_description',$value = '',$op = '='){
+function DisplayFilter_start($field= 'job_description',$value = '',$op = '=')
+{
     echo "<script type='module'> import { cleanAdsDisplayDiv } from './Job_view_script.js'; cleanAdsDisplayDiv(); </script>";
     $adverts = getAdvert_f($field,$value,$op);
     $ad_elem = array();
     $ad_JT = array();
     $output ='';
-    foreach($adverts as $ad){ 
+    foreach($adverts as $ad)
+    { 
         array_push($ad_JT,$ad->job_title);
         ad_div_creation($ad,$ad_elem);
     }
-    foreach($ad_elem as $elem){
+    foreach($ad_elem as $elem)
+    {
         add_str($elem,$output);    
     }
     echo "<div class='ads' id='ads_display'>$output</div>";
@@ -210,9 +233,11 @@ function DisplayFilter_start($field= 'job_description',$value = '',$op = '='){
 }
 
 // makes filter for ad in filter btn
-function submit_filter_form(){
+function submit_filter_form()
+{
     $ad_JT = array();
-    if($_SERVER['REQUEST_METHOD'] == "POST"){
+    if($_SERVER['REQUEST_METHOD'] == "POST")
+    {
         // filter data
         $field_in = $value_in = $operator_in = '';
 
@@ -240,17 +265,20 @@ function submit_filter_form(){
 }
 
 // makes filter for region btn filter
-function DisplayRegion($region = 'Gauteng'){
+function DisplayRegion($region = 'Gauteng')
+{
     echo "<script type='module'> import { cleanAdsDisplayDiv } from './Job_view_script.js'; cleanAdsDisplayDiv(); </script>";
     $adverts = getAdvertByRegion($region);
     $ad_elem = array();
     $ad_JT = array();
     $output ='';
-    foreach($adverts as $ad){ 
+    foreach($adverts as $ad)
+    { 
         array_push($ad_JT,$ad->job_title);
         ad_div_creation($ad,$ad_elem);
     }
-    foreach($ad_elem as $elem){
+    foreach($ad_elem as $elem)
+    {
         add_str($elem,$output);    
     }
     echo "<div class='ads' id='ads_display'>$output</div>";
@@ -258,17 +286,20 @@ function DisplayRegion($region = 'Gauteng'){
 }
 
 // makes filter for unpub ads btn filter
-function DisplayUnpub($date = '2023-02-01'){ // date needs to be in yyyy-ii-dd
+function DisplayUnpub($date = '2023-02-01')
+{ // date needs to be in yyyy-ii-dd
     echo "<script type='module'> import { cleanAdsDisplayDiv } from './Job_view_script.js'; cleanAdsDisplayDiv(); </script>";
     $adverts = getUnpublised($date);
     $ad_elem = array();
     $ad_JT = array();
     $output ='';
-    foreach($adverts as $ad){ 
+    foreach($adverts as $ad)
+    { 
         array_push($ad_JT,$ad->job_title);
         unpub_ad_div_creation($ad,$ad_elem);
     }
-    foreach($ad_elem as $elem){
+    foreach($ad_elem as $elem)
+    {
         add_str($elem,$output);    
     }
     echo "<div class='ads' id='ads_display'>$output</div>";
@@ -276,9 +307,11 @@ function DisplayUnpub($date = '2023-02-01'){ // date needs to be in yyyy-ii-dd
 }
 
 
-function submit_region_form(){ // populates the region filter and returns the values from the API
+function submit_region_form()
+{ // populates the region filter and returns the values from the API
     $ad_JT = array();
-    if($_SERVER['REQUEST_METHOD'] == "POST"){
+    if($_SERVER['REQUEST_METHOD'] == "POST")
+    {
         // region data
         $region = '';
         $region = sanitizeInput($_POST['region_in']);
@@ -291,9 +324,11 @@ function submit_region_form(){ // populates the region filter and returns the va
 
 }
 
-function submit_unpub_form(){ // populates the region filter and returns the values from the API
+function submit_unpub_form()
+{ // populates the region filter and returns the values from the API
     $ad_JT = array();
-    if($_SERVER['REQUEST_METHOD'] == "POST"){
+    if($_SERVER['REQUEST_METHOD'] == "POST")
+    {
         // region data
         $date_in = '';
         $date_in = sanitizeInput($_POST['unpub_in']);
