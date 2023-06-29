@@ -104,7 +104,7 @@ require '../Session.php';
         <script type="module">
             // imported functions
             import { hideMDDiv, DisplayMoreDetails, DisplayMDAd, addOnClick_MDbtn, cleanAdsDisplayDiv, displayFilter, displayRegion, displayUnpub, addClickFuncBtns } from  "./Job_view_script.js";
-            import { sendData, todayDate, uploadUnseenADs } from "./Record_clicks.js";
+            import { sendData, todayDate } from "./Record_clicks.js";
             // funcs to func_btns
             addClickFuncBtns();
             // DOM assistance
