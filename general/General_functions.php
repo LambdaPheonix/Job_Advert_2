@@ -22,15 +22,18 @@
                 {
                     $msg = "login Success";
                     return true;     
-                } else {
+                } else 
+                {
                     $msg ="login has failed. Password or username is incorrect";
                     return false;    
                 }
-            } else {
+            } else 
+            {
                 $msg ="username does not exist";
                 return false;
             }
-        } else {
+        } else 
+        {
             $msg = "Something when wrong in the db please contact support";
             die();
             return false;
@@ -75,7 +78,8 @@
         if ($attr_str == null)
         {
             return "<$tag>$combineStr</$tag>";
-        } else {
+        } else 
+        {
         return "<$tag $attr_str>$combineStr</$tag>";
         }
     }
@@ -86,7 +90,8 @@
         if ($arr_combo[0]=='' &&  $arr_combo[1]=='')
         {
             return null;
-        } else {
+        } else 
+        {
         return " $arr_combo[0]='$arr_combo[1]' ";
         }
     }
@@ -97,7 +102,8 @@
         if ($newStr == null)
         {
             $combineStr = $combineStr;
-        } else {
+        } else 
+        {
         $combineStr = $combineStr.$newStr;
         }
     }

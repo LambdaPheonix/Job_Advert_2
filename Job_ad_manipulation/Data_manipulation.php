@@ -27,7 +27,8 @@ function check_records($job_title,$uname)
         mysqli_query($con_ad_relation,$sql_insert);
         return "<sript>console.log('new ad inserted into db');</script>";
 
-    }else {
+    }else 
+    {
         return;
     }
 
@@ -83,7 +84,8 @@ function upload_insta($job_title,$date,$uname = 'parallel')
 
         // makes new daily record after the duplicates have been deleted
         return insert_entry($job_title,$clicks+1,$date); 
-    } else { // make new record if there isn't one for the day
+    } else 
+    { // make new record if there isn't one for the day
         mysqli_close($con);
         return insert_entry($job_title,1,$date);
     }
@@ -122,6 +124,6 @@ function update_entry($job_title,$clicks,$date)
 }
 
 // return data in format to use (in this case uploads to db)
-echo "(".json_encode($data).")";
+// echo "(".json_encode($data).")";
 
-echo upload_insta($data[0],$data[1],$data[2]);
+die(json_encode(upload_insta($data[0],$data[1],$data[2])));
