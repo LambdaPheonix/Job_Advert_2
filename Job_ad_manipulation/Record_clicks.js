@@ -50,3 +50,23 @@ export function sendData(data){ // note data has to be in JSON form already
     xhr.send(data);
 }
 
+// export function sendData(data) {
+//     $.ajax({
+//       url: './Data_manipulation.php',
+//       type: 'POST',
+//       dataType: 'json',
+//       contentType: 'application/json',
+//       data: JSON.stringify(data),
+//       success: function(response) {
+//         let div1 = $("#dump");
+//         let rStr = "<p>" + response + "</p>";
+//         console.log(rStr);
+//         div1.html(rStr);
+//       },
+//       error: function(xhr, status, error) {
+//         if (xhr.status == 404) {
+//           alert("file not found");
+//         }
+//       }
+//     });
+//   }

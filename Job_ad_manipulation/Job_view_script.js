@@ -5,14 +5,16 @@ import { sendData, todayDate } from "./Record_clicks.js";
 export { hideMDDiv, DisplayMoreDetails, DisplayMDAd, addOnClick_MDbtn, cleanAdsDisplayDiv, displayFilter, displayRegion, displayUnpub, addClickFuncBtns  };
 
 
-function makeDisplay(divName){ // makes filter btns display via divs
+function makeDisplay(divName)
+{ // makes filter btns display via divs
     // declared all DOM items to use
     //let btn = document.querySelector('#' + btnName);
     let div_filters = document.querySelector('#filters_bg');
-    let form = document.querySelector('#'+divName);
+    let form = document.querySelector('#' + divName);
     let forms = document.querySelectorAll(".filter_div");
     // making the div and form visible
-    forms.forEach(elem => {
+    forms.forEach(elem => 
+    {
         elem.classList.add("invis");
         elem.classList.remove('vis');
     });
@@ -22,24 +24,29 @@ function makeDisplay(divName){ // makes filter btns display via divs
     form.classList.add('vis');
 }
 
-function displayFilter(){  // function to make DOM easier
+function displayFilter()
+{  // function to make DOM easier
     makeDisplay('filter_div');
 }
-function displayRegion(){ // function to make DOM easier
+function displayRegion()
+{ // function to make DOM easier
     makeDisplay('region_div');
 }
-function displayUnpub(){ // function to make DOM easier
+function displayUnpub()
+{ // function to make DOM easier
     makeDisplay('unpub_div');
 }
 
 // adds click function to to display filters on function btns
-function addClickFuncBtns(){ // makes filter buttons
+function addClickFuncBtns()
+{ // makes filter buttons
     let func_btns = document.querySelectorAll('.func_btn');
     let arrFuncs = [displayFilter, displayRegion, displayUnpub];
-    for (let i = 0; i < arrFuncs.length; i++) {
-        const element = arrFuncs[i];
+    arrFuncs.forEach(element => 
+    {
+        // const element = arrFuncs[i];
         func_btns[i].addEventListener('click',element);
-    }
+    });
 }
 
 var forms = document.querySelectorAll(".filter_forms");
@@ -50,7 +57,8 @@ var forms = document.querySelectorAll(".filter_forms");
     filter_div.classList.add("invis");
 
 
-function DisplayMDAd(JT){ // displays extra details on ad 
+function DisplayMDAd(JT)
+{ // displays extra details on ad 
     // JT = Job Title
     var elems = document.querySelectorAll('.'+JT);
     elems.forEach(elem => {
@@ -61,14 +69,17 @@ function DisplayMDAd(JT){ // displays extra details on ad
 }
 
 // displays the current clicked btns divs and hides all others
-function DisplayMoreDetails(JT,$uname){
+function DisplayMoreDetails(JT,$uname)
+{
     let btn = document.querySelector('.'+JT+'_btn');
     hideMDDiv();
 
     console.log(btn.classList.contains('open'));
-    if (btn.classList.contains('open')){
+    if (btn.classList.contains('open'))
+    {
         btn.classList.remove('open');
-    } else{
+    } else
+    {
         DisplayMDAd(JT); 
         btn.classList.add('open');
         // creates data to send to server
@@ -82,30 +93,37 @@ function DisplayMoreDetails(JT,$uname){
 }
 
 // init add event listeners 
-function addOnClick_MDbtn(btn,elemName,$uname){  
-    if (btn != undefined){
-        btn.addEventListener('click', function(){DisplayMoreDetails(elemName,$uname);});
-    }
-    else{
+function addOnClick_MDbtn(btn,elemName,$uname)
+{  
+    if (btn != undefined)
+    {
+        btn.addEventListener('click', function()
+        {DisplayMoreDetails(elemName,$uname);});
+    } else
+    {
         console.log("no btns found");
         return;
     }
 }
 
 // hides all more details divs.
-function hideMDDiv(){
+function hideMDDiv()
+{
     var divs = document.querySelectorAll('.MD_div')
     divs.forEach(elem => {
         elem.classList.add('invis');
     });
 }
 
-function cleanAdsDisplayDiv(){ // cleans up the div for new filter results
+function cleanAdsDisplayDiv()
+{ // cleans up the div for new filter results
     let parent = document.getElementById('display_ad_box');
-    if (parent.lastChild.id == 'ads_display'){
+    if (parent.lastChild.id == 'ads_display')
+    {
     var element = document.querySelector('#ads_display').innerHTML = "";
     element.remove();
-    } else {
+    } else 
+    {
         return;
     }
 }
