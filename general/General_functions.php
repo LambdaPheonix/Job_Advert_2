@@ -41,6 +41,9 @@
     }
 
     function sanitizeInput($beforeSanitize){ // cleans input from any  unwanted chars or XSS
+        if(gettype($beforeSanitize) != "string"){
+            $beforeSanitize = "was not a string";
+        }
         $beforeSanitize = trim($beforeSanitize);
         $beforeSanitize = stripslashes($beforeSanitize);
         $beforeSanitize = htmlspecialchars($beforeSanitize);
@@ -93,6 +96,7 @@
 
     // creates divs for adverts according to filters 
     function ad_div_creation($std_obj_ad,&$arr_elems){
+
         $job_title = sanitizeInput($std_obj_ad->job_title);
         $brief_description = sanitizeInput($std_obj_ad->brief_description);
         $detail_description = sanitizeInput($std_obj_ad->detail_description);
@@ -100,15 +104,15 @@
         $contact = sanitizeInput($std_obj_ad->consultant_name);
         $email = sanitizeInput($std_obj_ad->response_email);
         $combineStr = "";
-        add_str(WrapTag_attr(WrapTag("Job Title: $job_title",'p'),'div',add_attr(array('class','JT'))),$combineStr);       
-        add_str(WrapTag_attr(WrapTag($brief_description,'p'),'div',add_attr(array('class',"brief"))),$combineStr);
-        add_str(WrapTag_attr(WrapTag_attr("More details",'button',add_attr(array('class',"MD_btn ". $job_title."_btn"))),'div',add_attr(array('class','btn'))),$combineStr);
-        add_str(WrapTag_attr(WrapTag($detail_description,'p'),'div',add_attr(array('class',"detail  $job_title MD_div"))),$combineStr);
-        add_str(WrapTag_attr(WrapTag("Region: $region",'p'),'div',add_attr(array('class',"region $job_title MD_div"))),$combineStr);
-        add_str(WrapTag_attr(WrapTag("Consultant name: $contact",'p'),'div',add_attr(array('class',"contact $job_title MD_div"))),$combineStr);
-        add_str(WrapTag_attr(WrapTag("Response email: $email",'p'),'div',add_attr(array('class',"email $job_title MD_div"))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Job Title: $job_title",'p'),'div', add_attr(array("class", "JT"))),$combineStr);       
+        add_str(WrapTag_attr(WrapTag($brief_description,'p'),'div', add_attr(array('class', "brief"))),$combineStr);
+        add_str(WrapTag_attr(WrapTag_attr("More details",'button', add_attr(array('class', "MD_btn ". $job_title."_btn"))),'div', add_attr(array('class','btn'))),$combineStr);
+        add_str(WrapTag_attr(WrapTag($detail_description,'p'),'div', add_attr(array('class', "detail  $job_title MD_div"))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Region: $region",'p'),'div', add_attr(array('class', "region $job_title MD_div"))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Consultant name: $contact",'p'),'div', add_attr(array('class', "contact $job_title MD_div"))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Response email: $email",'p'),'div', add_attr(array('class', "email $job_title MD_div"))),$combineStr);
         //add_str("<br>",$combineStr);
-        $combineStr = WrapTag_attr($combineStr,'section',add_attr(array('class','ad_container')));
+        $combineStr = WrapTag_attr($combineStr,'section', add_attr(array('class','ad_container')));
         array_push($arr_elems,$combineStr);
 
     }
@@ -121,13 +125,13 @@
         $end_date = sanitizeInput($std_obj_ad->end_date);
         $last_mod = sanitizeInput($std_obj_ad->last_modified_date);
         $combineStr = "";
-        add_str(WrapTag_attr(WrapTag("Job Title: $job_title",'p'),'div',add_attr(array('class','JT'))),$combineStr);       
-        add_str(WrapTag_attr(WrapTag("Vacancy referance: $vacancy_ref",'p'),'div',add_attr(array('class','detail'))),$combineStr);
-        add_str(WrapTag_attr(WrapTag("Date posted: $start_date",'p'),'div',add_attr(array('class','contact'))),$combineStr);
-        add_str(WrapTag_attr(WrapTag("Date removed: $end_date",'p'),'div',add_attr(array('class','email'))),$combineStr);
-        add_str(WrapTag_attr(WrapTag("Last date modifed: $last_mod",'p'),'div',add_attr(array('class','brief'))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Job Title: $job_title",'p'),'div', add_attr(array('class','JT'))),$combineStr);       
+        add_str(WrapTag_attr(WrapTag("Vacancy referance: $vacancy_ref",'p'),'div', add_attr(array('class','detail'))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Date posted: $start_date",'p'),'div', add_attr(array('class','contact'))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Date removed: $end_date",'p'),'div', add_attr(array('class','email'))),$combineStr);
+        add_str(WrapTag_attr(WrapTag("Last date modifed: $last_mod",'p'),'div', add_attr(array('class','brief'))),$combineStr);
         //add_str("<br>",$combineStr);
-        $combineStr = WrapTag_attr($combineStr,'section',add_attr(array('class','ad_container')));
+        $combineStr = WrapTag_attr($combineStr,'section', add_attr(array('class','ad_container')));
         array_push($arr_elems,$combineStr);
         //echo json_encode($std_obj_ad);
     }
@@ -163,7 +167,7 @@
                 }
                 $ul = WrapTag($combineStr,'ul');
                 $nav = WrapTag($ul,'nav');
-                $div = WrapTag_attr($nav,'div',array('id',"nav_div"));
+                $div = WrapTag_attr($nav,'div', add_attr(array('id', "nav_div")));
                 echo $div;
                 }
         
